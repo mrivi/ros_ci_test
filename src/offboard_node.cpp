@@ -4,7 +4,7 @@
  * Stack and tested in Gazebo SITL
  */
 
-#include "include/offboard_node.h"
+#include "offboard_node.h"
 
 mavros_msgs::State current_state;
 void state_cb(const mavros_msgs::State::ConstPtr& msg){
