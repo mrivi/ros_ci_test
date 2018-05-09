@@ -1,31 +1,36 @@
-# Use ubuntu trusty (14.04) with sudo privileges.
+# Based on https://github.com/felixduvallet/ros-travis-integration
+#
+# vim:set ts=2 sw=2 et:
 dist: trusty
 sudo: required
-language:
-  - cpp
+language: generic
+compiler:
+  - gcc
+cache:
+  directories:
+    - $HOME/.cache/pip
+  before_cache:
+    - rm -f $HOME/.cache/pip/log/debug.log
 cache:
   - apt
 
-# Configuration variables. All variables are global now, but this can be used to
-# trigger a build matrix for different ROS distributions if desired.
 env:
   global:
-    - ROS_DISTRO=kinetic
-    - ROS_CI_DESKTOP="`lsb_release -cs`"  # e.g. [precise|trusty|...]
+    #- ROS_DISTRO=jade
+    - ROS_CI_DESKTOP="$(lsb_release -cs)"
     - CI_SOURCE_PATH=$(pwd)
     - ROSINSTALL_FILE=$CI_SOURCE_PATH/dependencies.rosinstall
-    - CATKIN_OPTIONS=$CI_SOURCE_PATH/catkin.options
     - ROS_PARALLEL_JOBS='-j8 -l6'
-    # Set the python path manually to include /usr/-/python2.7/dist-packages
-    # as this is where apt-get installs python packages.
-    - PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages
 
-################################################################################
+  matrix:
+    - ROS_DISTRO=indigo
+    - ROS_DISTRO=jade
 
-# Install system dependencies, namely a very barebones ROS setup.
 before_install:
-  - sudo sh -c "echo \"deb http://packages.ros.org/ros/ubuntu xenial main\" > /etc/apt/sources.list.d/ros-latest.list"
+  - sudo sh -c "echo \"deb http://packages.ros.org/ros/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
+  #- sudo sh -c "echo \"deb http://packages.ros.org/ros-shadow-fixed/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
   - wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
+  # Update python 2.7 version
   - sudo apt-add-repository ppa:deadsnakes/ppa -y
   - sudo apt-get update -qq
   - sudo -H apt-get install -qq -y --allow-unauthenticated python2.7-dev libpython2.7-dev libpython2.7 python2.7 libpython2.7-stdlib
@@ -40,11 +45,10 @@ before_install:
   - sudo rosdep init
   - rosdep update
 
-
-# Create a catkin workspace with the package under integration.
 install:
-  - mkdir -p ~/catkin_ws/src
-  - cd ~/catkin_ws/src
+  # Create catkin workspace
+  - mkdir -p ~/catkin_ws
+  - cd ~/catkin_ws
   - catkin config --init --mkdirs
   # Pull source depends
   - cd src
@@ -64,21 +68,21 @@ before_script:
   # Source environment
   - source /opt/ros/$ROS_DISTRO/setup.bash
 
-# Compile and test (mark the build as failed if any step fails). If the
-# CATKIN_OPTIONS file exists, use it as an argument to catkin_make, for example
-# to blacklist certain packages.
-#
-# NOTE on testing: `catkin_make run_tests` will show the output of the tests
-# (gtest, nosetest, etc..) but always returns 0 (success) even if a test
-# fails. Running `catkin_test_results` aggregates all the results and returns
-# non-zero when a test fails (which notifies Travis the build failed).
 script:
   - cd ~/catkin_ws
-#  - catkin_make $( [ -f $CATKIN_OPTIONS ] && cat $CATKIN_OPTIONS )
+  - catkin config --install -DSETUPTOOLS_DEB_LAYOUT=OFF -DSETUPTOOLS_ARG_EXTRA=""
   - catkin build --no-status --summary
-  # Run the tests, ensuring the path is set correctly.
- # - source devel/setup.bash
-#- catkin_make run_tests && catkin_test_results
+  - source devel/setup.bash
+  - catkin run_tests --no-status -p1 -i --summary
+  #- catkin_test_results --all ~/catkin_ws/build
 
 after_failure:
   - find ~/catkin_ws/build -path '*/test_results/*' -type f -exec echo "==== {} ====" \; -exec cat {} \;
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/b856f174ff9736ad23ec
+    on_success: change
+    on_failure: always
+    on_start: false
