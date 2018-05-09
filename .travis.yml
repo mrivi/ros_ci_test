@@ -31,7 +31,8 @@ before_install:
   - sudo apt-add-repository ppa:deadsnakes/ppa -y
   - sudo apt-get update -qq
   - sudo -H apt-get install -qq -y --allow-unauthenticated python2.7-dev libpython2.7-dev libpython2.7 python2.7 libpython2.7-stdlib
-    python-pip python-setuptools python-catkin-pkg python-rosdep python-wstool ros-$ROS_DISTRO-catkin python-catkin-tools
+    python-pip python-setuptools python-catkin-pkg python-rosdep python-wstool 
+  - sudo apt-get install -y ros-$ROS_DISTRO-catkin python-catkin-tools
   # Install Python future module
   - sudo -H pip install -I future -t /usr/lib/python2.7/dist-packages
   # Update PYTHONPATH
@@ -59,7 +60,9 @@ install:
   - rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -q -y
   # Install GeographicLib datasets (for Ubuntu Trusty - can only download geoid model)
   - sudo -H mkdir -p /usr/share/geographiclib
-  - sudo -H geographiclib-datasets-download egm96_5
+  - wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
+  - chmod +x install_geographiclib_datasets.sh
+  - sudo -H ./install_geographiclib_datasets.sh
 
 before_script:
   # Source environment
