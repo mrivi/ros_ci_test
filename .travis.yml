@@ -48,7 +48,7 @@ install:
   # Create catkin workspace
   - mkdir -p ~/catkin_ws
   - cd ~/catkin_ws
-  - catkin init
+  - mkdir -p ./src
   # Pull source depends
   - cd src
   - wstool init
