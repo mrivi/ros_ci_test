@@ -34,9 +34,9 @@ before_install:
   - sudo apt-get install -y ros-$ROS_DISTRO-desktop-full
  # - sudo apt-get install -y ros-$ROS_DISTRO-catkin python-catkin-tools
   # Install Python future module
-  - sudo -H pip install -I future -t /usr/lib/python2.7/dist-packages
+  #- sudo -H pip install -I future -t /usr/lib/python2.7/dist-packages
   # Update PYTHONPATH
-  - export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages
+  #- export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages
   - sudo apt-get install -y ros-$ROS_DISTRO-mavlink ros-$ROS_DISTRO-mavros ros-$ROS_DISTRO-mavros-extras
   # Source environment
   - source /opt/ros/$ROS_DISTRO/setup.bash
