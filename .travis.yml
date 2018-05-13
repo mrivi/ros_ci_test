@@ -28,8 +28,6 @@ before_install:
   #- sudo sh -c "echo \"deb http://packages.ros.org/ros-shadow-fixed/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
   - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
   - sudo apt-get clean -y
-  - sudo apt-get autoremove -y
-  - rm -rf /var/lib/apt/lists/*
   - sudo apt-get update -qq
   # - sudo -H apt-get install -qq -y --allow-unauthenticated python2.7-dev libpython2.7-dev libpython2.7 python2.7 libpython2.7-stdlib
   #   python-pip python-setuptools python-catkin-pkg python-rosdep python-wstool
