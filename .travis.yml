@@ -79,6 +79,7 @@ script:
   #- catkin config --install -DSETUPTOOLS_DEB_LAYOUT=OFF -DSETUPTOOLS_ARG_EXTRA=""
   - source /opt/ros/$ROS_DISTRO/setup.bash
   - catkin build
+  # Check for clang format
   - chmod +x src/ros_ci_test/check_code_format.sh
   - ./src/ros_ci_test/check_code_format.sh
   #- source devel/setup.bash
