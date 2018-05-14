@@ -21,10 +21,11 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-STILE='google'
+STYLE='google'
 
 FILES_TO_CHECK=$(git diff --name-only master | grep -E ".*\.(cpp|c|h|hpp)"$)
 
+pwd
 echo $FILES_TO_CHECK
 
 if [ -z "${FILES_TO_CHECK}" ]; then
