@@ -41,6 +41,7 @@ before_install:
   #- export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages
   - sudo apt-get install -y ros-$ROS_DISTRO-mavlink ros-$ROS_DISTRO-mavros ros-$ROS_DISTRO-mavros-extras
   # Source environment
+  - sudo apt-get install -y clang-format
   - source /opt/ros/$ROS_DISTRO/setup.bash
   # Prepare rosdep
   - sudo rosdep init
@@ -78,17 +79,11 @@ script:
   #- catkin config --install -DSETUPTOOLS_DEB_LAYOUT=OFF -DSETUPTOOLS_ARG_EXTRA=""
   - source /opt/ros/$ROS_DISTRO/setup.bash
   - catkin build
+  - chmod +x src/ros_ci_test/check_code_format.sh
+  - ./src/ros_ci_test/check_code_format.sh
   #- source devel/setup.bash
  # - catkin run_tests --no-status -p1 -i --summary
   #- catkin_test_results --all ~/catkin_ws/build
 
 after_failure:
   - find ~/catkin_ws/build -path '*/test_results/*' -type f -exec echo "==== {} ====" \; -exec cat {} \;
-
-notifications:
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/b856f174ff9736ad23ec
-    on_success: change
-    on_failure: always
-    on_start: false
