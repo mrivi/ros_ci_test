@@ -33,8 +33,8 @@ fi
 for f in $FILES_TO_CHECK; do
 	d=$(diff -u "$f" <(clang-format "$f"))
 	if ! [ -z "$d" ]; then
-        echo "!!! $f not compliant to coding style, here is the fix:"
-        echo "$d"
+        echo "$f Code style check failed"
+        echo -e "${RED}d ${NC}"
         exit 1
     fi
 done
