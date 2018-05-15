@@ -26,14 +26,14 @@ STYLE='google'
 FILES_TO_CHECK=$(git diff --name-only master | grep -E ".*\.(cpp|c|h|hpp)"$)
 
 if [ -z "${FILES_TO_CHECK}" ]; then
-  echo -e "${GREEN}No source code to check for formatting.${NC}"
+  echo -e "${GREEN}No source code t.${NC}"
   exit 0
 fi
 
 for f in $FILES_TO_CHECK; do
 	d=$(diff -u "$f" <(clang-format "$f"))
 	if ! [ -z "$d" ]; then
-        echo "$f Code style check failed"
+        echo -e "${RED} Code style check failed, please run clang-format.${NC}"
         echo "$d"
         exit 1
     fi
