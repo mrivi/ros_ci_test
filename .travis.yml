@@ -31,8 +31,11 @@ before_install:
   - sudo apt-get update -qq
   # - sudo -H apt-get install -qq -y --allow-unauthenticated python2.7-dev libpython2.7-dev libpython2.7 python2.7 libpython2.7-stdlib
   #   python-pip python-setuptools python-catkin-pkg python-rosdep python-wstool
-  - sudo apt-get install -y -qq cmake curl g++ git wget libusb-dev libusb-1.0-0-dev
-  - sudo apt-get install -y python-rosinstall python-rosinstall-generator python-wstool python-catkin-tools build-essential
+  - sudo apt-get install -y build-essential
+  - sudo apt-get install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+  - sudo apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+  - sudo apt-get install -y -qq curl g++ wget libusb-dev libusb-1.0-0-dev
+  - sudo apt-get install -y python-rosinstall python-rosinstall-generator python-wstool python-catkin-tools
   - sudo apt-get install -y ros-$ROS_DISTRO-ros-base
  # - sudo apt-get install -y ros-$ROS_DISTRO-catkin python-catkin-tools
   # Install Python future module
@@ -68,6 +71,16 @@ install:
   - wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
   - chmod +x install_geographiclib_datasets.sh
   - sudo -H ./install_geographiclib_datasets.sh
+  - curl -sL https://github.com/opencv/opencv/archive/2.4.13.6.zip > opencv.zip
+  - unzip opencv.zip
+  - cd opencv-2.4.13.6
+  - mkdir build
+  - cd build
+  - cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
+  - make -j4
+  - sudo make install
+  - sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
+  - sudo ldconfig
   - catkin init
 
 before_script:
