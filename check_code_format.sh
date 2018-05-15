@@ -25,21 +25,27 @@ STYLE='google'
 
 FILES_TO_CHECK=$(git diff --name-only master | grep -E ".*\.(cpp|c|h|hpp)"$)
 
-pwd
-echo $FILES_TO_CHECK
-
 if [ -z "${FILES_TO_CHECK}" ]; then
   echo -e "${GREEN}No source code to check for formatting.${NC}"
   exit 0
 fi
 
-FORMAT_DIFF=$(git diff -U0 master -- ${FILES_TO_CHECK} | python ./scripts/clang-format-diff.py -p1 -style=${STYLE})
+for f in $FILES_TO_CHECK; do
+	d=$(diff -u "$f" <(clang-format "$f"))
+	if ! [ -z "$d" ]; then
+        echo "!!! $f not compliant to coding style, here is the fix:"
+        echo "$d"
+        exit 1
+    fi
+done
 
-if [ -z "${FORMAT_DIFF}" ]; then
-  echo -e "${GREEN}All source code in PR properly formatted.${NC}"
-  exit 0
-else
-  echo -e "${RED}Found formatting errors!${NC}"
-  echo "${FORMAT_DIFF}"
-  exit 1
-fi
+# FORMAT_DIFF=$(git diff -U0 master -- ${FILES_TO_CHECK} | python ./scripts/clang-format-diff.py -p1 -style=${STYLE})
+
+# if [ -z "${FORMAT_DIFF}" ]; then
+#   echo -e "${GREEN}All source code in PR properly formatted.${NC}"
+#   exit 0
+# else
+#   echo -e "${RED}Found formatting errors!${NC}"
+#   echo "${FORMAT_DIFF}"
+#   exit 1
+# fi
