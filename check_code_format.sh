@@ -34,7 +34,7 @@ for f in $FILES_TO_CHECK; do
 	d=$(diff -u "$f" <(clang-format "$f"))
 	if ! [ -z "$d" ]; then
         echo "$f Code style check failed"
-        echo -e "${RED}d ${NC}"
+        echo "$d"
         exit 1
     fi
 done
