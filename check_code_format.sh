@@ -30,22 +30,22 @@ if [ -z "${FILES_TO_CHECK}" ]; then
   exit 0
 fi
 
-for f in $FILES_TO_CHECK; do
-	d=$(diff -u "$f" <(clang-format "$f"))
-	if ! [ -z "$d" ]; then
-        echo -e "${RED} Code style check failed, please run clang-format.${NC}"
-        echo "$d"
-        exit 1
-    fi
-done
+# for f in $FILES_TO_CHECK; do
+# 	d=$(diff -u "$f" <(clang-format "$f"))
+# 	if ! [ -z "$d" ]; then
+#         echo -e "${RED} Code style check failed, please run clang-format.${NC}"
+#         echo "$d"
+#         exit 1
+#     fi
+# done
 
-# FORMAT_DIFF=$(git diff -U0 master -- ${FILES_TO_CHECK} | python ./scripts/clang-format-diff.py -p1 -style=${STYLE})
+FORMAT_DIFF=$(git diff -U0 master -- ${FILES_TO_CHECK} | python ./scripts/clang-format-diff.py -p1 -style=${STYLE})
 
-# if [ -z "${FORMAT_DIFF}" ]; then
-#   echo -e "${GREEN}All source code in PR properly formatted.${NC}"
-#   exit 0
-# else
-#   echo -e "${RED}Found formatting errors!${NC}"
-#   echo "${FORMAT_DIFF}"
-#   exit 1
-# fi
+if [ -z "${FORMAT_DIFF}" ]; then
+  echo -e "${GREEN}All source code in PR properly formatted.${NC}"
+  exit 0
+else
+  echo -e "${RED}Found formatting errors!${NC}"
+  echo "${FORMAT_DIFF}"
+  exit 1
+fi
