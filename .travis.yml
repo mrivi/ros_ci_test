@@ -19,6 +19,7 @@ env:
     - ROS_CI_DESKTOP="$(lsb_release -cs)"
     - CI_SOURCE_PATH=$(pwd)
     - ROS_DISTRO=kinetic
+    - CHECK_FORMAT_ON = ON
 
 before_install:
   - sudo sh -c "echo \"deb http://packages.ros.org/ros/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
@@ -32,6 +33,10 @@ before_install:
   - sudo apt-get install -y python-rosinstall python-rosinstall-generator python-wstool python-catkin-tools
   - sudo apt-get install -y ros-$ROS_DISTRO-ros-base
   - sudo apt-get install -y ros-$ROS_DISTRO-mavlink ros-$ROS_DISTRO-mavros ros-$ROS_DISTRO-mavros-extras
+  - if [[ "$CHECK_FORMAT_ON" == "ON"]]; then
+      # Install clang diff tool
+      curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o scripts/clang-format-diff.py;
+    fi
   - sudo apt-get install -y clang-format-3.8
   # Source environment
   - source /opt/ros/$ROS_DISTRO/setup.bash
