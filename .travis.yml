@@ -80,5 +80,6 @@ script:
   - source /opt/ros/$ROS_DISTRO/setup.bash
   - catkin build
   # Check for clang format
-  - ./src/ros_ci_test/check_code_format.sh
+  - cd src/ros_ci_test
+  - ./check_code_format.sh
   #- source devel/setup.bash
