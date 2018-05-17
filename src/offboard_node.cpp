@@ -30,7 +30,6 @@ int main(int argc, char** argv) {
   while (ros::ok() && !current_state.connected) {
     ros::spinOnce();
     rate.sleep();
-    print()
   }
 
   geometry_msgs::PoseStamped pose;
