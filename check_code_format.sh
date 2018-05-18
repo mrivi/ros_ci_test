@@ -39,7 +39,7 @@ FILES_TO_CHECK=$(git diff --name-only master | grep -E ".*\.(cpp|c|h|hpp)"$)
 #     fi
 # done
 
-FORMAT_DIFF=$(git diff --color=always master -- ${FILES_TO_CHECK} | python ~/clang-format-diff.py -p1 -style=${STYLE})
+FORMAT_DIFF=$(git diff master -- ${FILES_TO_CHECK} | python ~/clang-format-diff.py -p1 -style=${STYLE})
 
 if [ -z "${FORMAT_DIFF}" ]; then
   echo -e "${GREEN}All source code in PR properly formatted.${NC}"
