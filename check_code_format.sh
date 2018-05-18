@@ -18,9 +18,9 @@
 #
 # This script assumes to be invoked at the project root directory.
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m' # No Color
+COLOR_END="\033[0m"
+COLOR_RED="\033[0;31m" 
+COLOR_GREEN="\033[0;32m" 
 STYLE='google'
 
 FILES_TO_CHECK=$(git diff --name-only master | grep -E ".*\.(cpp|c|h|hpp)"$)
@@ -39,13 +39,16 @@ FILES_TO_CHECK=$(git diff --name-only master | grep -E ".*\.(cpp|c|h|hpp)"$)
 #     fi
 # done
 
-FORMAT_DIFF=$(git diff master -- ${FILES_TO_CHECK} --color=always | python ~/clang-format-diff.py -p1 -style=${STYLE})
+FORMAT_DIFF=$(git diff master -- ${FILES_TO_CHECK} | python ~/clang-format-diff.py -p1 -style=${STYLE})
 
 if [ -z "${FORMAT_DIFF}" ]; then
-  echo -e "${GREEN}All source code in PR properly formatted.${NC}"
+  #echo -e "${GREEN}All source code in PR properly formatted.${NC}"
   exit 0
 else
-  echo -e "${RED}Found formatting errors!${NC}"
-  echo "${FORMAT_DIFF}"
+  echo -e "Code style check failed, please run clang-format"
+  echo "${FORMAT_DIFF}" | 
+  	sed -e "s/\(^-.*$\)/`echo -e \"$COLOR_RED\1$COLOR_END\"`/" |
+  	sed -e "s/\(^+.*$\)/`echo -e \"$COLOR_GREEN\1$COLOR_END\"`/"
+  #echo "${FORMAT_DIFF}"
   exit 1
 fi
