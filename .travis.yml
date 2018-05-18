@@ -23,16 +23,16 @@ env:
 before_install:
   - sudo sh -c "echo \"deb http://packages.ros.org/ros/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
   - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
-  - sudo apt-get clean -y
   - sudo apt-get update -qq
-  - sudo apt-get install -y build-essential
-  - sudo apt-get install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
-  #- sudo apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
-  - sudo apt-get install -y -qq curl g++ wget libusb-dev libusb-1.0-0-dev
+  - sudo apt-get install -y build-essential cmake git curl g++ wget
+  - sudo apt-get install -y libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+  #- sudo apt-get install -y -qq libusb-dev libusb-1.0-0-dev
   - sudo apt-get install -y python-rosinstall python-rosinstall-generator python-wstool python-catkin-tools
+  # Install ROS Kinetic
   - sudo apt-get install -y ros-$ROS_DISTRO-ros-base
+  # Install MavLink and Mavros
   - sudo apt-get install -y ros-$ROS_DISTRO-mavlink ros-$ROS_DISTRO-mavros ros-$ROS_DISTRO-mavros-extras
-  - sudo apt-get install -y clang-format-3.8
+ # - sudo apt-get install -y clang-format-3.8
   - curl -sL http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py > ~/clang-format-diff.py
   # Source environment
   - source /opt/ros/$ROS_DISTRO/setup.bash
@@ -48,12 +48,12 @@ install:
   # Pull source depends
   - cd src
   - wstool init
-  # Link the repo we are testing to the new workspace
+  # Link the repository we are testing to the new workspace
   - ln -s $CI_SOURCE_PATH .
   # Install dependencies using rosdep
   - cd ~/catkin_ws
   - rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -q -y
-  # Install GeographicLib datasets (for Ubuntu Trusty - can only download geoid model)
+  # Install GeographicLib datasets
   - sudo -H mkdir -p /usr/share/geographiclib
   - wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
   - chmod +x install_geographiclib_datasets.sh
@@ -82,4 +82,3 @@ script:
   # Check for clang format
   - cd src/ros_ci_test
   - ./check_code_format.sh
-  #- source devel/setup.bash
