@@ -39,14 +39,14 @@ FILES_TO_CHECK=$(git diff --name-only master | grep -E ".*\.(cpp|c|h|hpp)"$)
 #     fi
 # done
 
-FORMAT_DIFF=$(git diff master -- ${FILES_TO_CHECK} | python ~/clang-format-diff.py -p1 -style=${STYLE})
+FORMAT_DIFF=$(git diff -U0 HEAD^ | python ~/clang-format-diff.py -p1 -style=${STYLE})
 
 if [ -z "${FORMAT_DIFF}" ]; then
   #echo -e "${GREEN}All source code in PR properly formatted.${NC}"
   exit 0
 else
   echo -e "Code style check failed, please run clang-format"
-  echo "${FORMAT_DIFF}" | 
+  echo "$FORMAT_DIFF" | 
   	sed -e "s/\(^-.*$\)/`echo -e \"$COLOR_RED\1$COLOR_END\"`/" |
   	sed -e "s/\(^+.*$\)/`echo -e \"$COLOR_GREEN\1$COLOR_END\"`/"
   #echo "${FORMAT_DIFF}"
