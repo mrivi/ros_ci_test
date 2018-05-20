@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
         if (arming_client.call(arm_cmd) && arm_cmd.response.success) {
           ROS_INFO("Vehicle armed");
         }
-        last_request = ros::Time::now();
+        last_request=ros::Time::now();
       }
     }
 
