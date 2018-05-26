@@ -28,10 +28,19 @@ fi
 
 for f in $FILES_TO_CHECK; do
 	d=$(diff -u "$f" <(clang-format "$f" -style=${STYLE}))
-	if ! [ -z "$d" ]; then
+    if [ -z "$d" ]; then
+		echo -e "Code style check passed."
+  		exit 0
+	else
+		echo -e "Code style check failed, please run clang-format"
         echo "$d" |
         	sed -e "s/\(^-.*$\)/`echo -e \"$COLOR_RED\1$COLOR_END\"`/" |
   			sed -e "s/\(^+.*$\)/`echo -e \"$COLOR_GREEN\1$COLOR_END\"`/"
         exit 1
     fi
 done
+
+
+# git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+# git fetch
+# git diff --name-only HEAD origin/${TRAVIS_BRANCH}
