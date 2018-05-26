@@ -27,15 +27,15 @@ int main(int argc, char** argv) {
   ros::Rate rate(20.0);
 
   // wait for FCU connection
-  while (ros::ok()&& !current_state.connected) {
+  while (ros::ok() && !current_state.connected) {
     ros::spinOnce();
-    rate.sleep();  
+    rate.sleep(); 
   }
 
   geometry_msgs::PoseStamped pose;
-  pose.pose.position.x =0.0;
-  pose.pose.position.y =0.0;
-  pose.pose.position.z =2.0;
+  pose.pose.position.x = 0.0;
+  pose.pose.position.y = 0.0;
+  pose.pose.position.z = 2.0;
 
   // send a few setpoints before starting
   for (int i = 100; ros::ok() && i > 0; --i) {
@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
     if (current_state.mode != "OFFBOARD" &&
         (ros::Time::now() - last_request > ros::Duration(5.0))) {
       if (set_mode_client.call(offb_set_mode) &&
-          offb_set_mode.response.mode_sent) {
+          offb_set_mode.response.mode_sent){
         ROS_INFO("Offboard enabled");
       }
       last_request = ros::Time::now();
