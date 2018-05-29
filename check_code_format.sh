@@ -19,7 +19,7 @@ STYLE='google'
 # fi
 
 
-FILES_TO_CHECK=$(git diff --name-only master | grep -E ".*\.(cpp|c|h|hpp)"$)
+FILES_TO_CHECK=$(git diff --name-only origin/master | grep -E ".*\.(cpp|c|h|hpp)"$)
 
 if [ -z "${FILES_TO_CHECK}" ]; then
   echo -e "No source code to check for formatting."
