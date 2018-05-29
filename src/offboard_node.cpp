@@ -41,7 +41,6 @@ int main(int argc, char** argv) {
   for (int i = 100; ros::ok() && i > 0; --i) {
     local_pos_pub.publish(pose);
     ros::spinOnce();
-    rate.sleep();
   }
 
   mavros_msgs::SetMode offb_set_mode;
