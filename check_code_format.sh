@@ -19,7 +19,7 @@
 # fi
 
 # Fix style recursively in all the repo
-sh tools/fix_style.sh .
+sh fix_style.sh .
 
 # Print the diff with the remote branch (empty if no diff)
 git --no-pager diff -U0 --color
