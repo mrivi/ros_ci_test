@@ -84,3 +84,4 @@ script:
   - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
   - ./check_code_format.sh
   #- catkin run_tests --no-deps --this
+  - cat /home/travis/catkin_ws/logs/offboard_node/build.make.000.log
