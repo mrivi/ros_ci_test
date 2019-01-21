@@ -188,10 +188,9 @@ catkin_add_gtest(${PROJECT_NAME}-test test/main.cpp
                                       test/test_common.cpp)
 
 
-if(TARGET ${PROJECT_NAME}-test)
-  target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME}
-  ${catkin_LIBRARIES})
-endif()
+#if(TARGET ${PROJECT_NAME}-test)
+#  target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
+#endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
