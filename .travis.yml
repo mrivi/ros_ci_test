@@ -44,7 +44,7 @@ install:
   - cd src
   - wstool init
   # Link the repository we are testing to the new workspace
-  - ln -s $CI_SOURCE_PATH .
+  #- ln -s $CI_SOURCE_PATH .
   # Install dependencies using rosdep
   - cd ~/catkin_ws
   - rosinstall_generator --rosdistro kinetic mavlink | tee /tmp/mavros.rosinstall
@@ -76,6 +76,7 @@ before_script:
 script:
   - cd ~/catkin_ws
   - source /opt/ros/$ROS_DISTRO/setup.bash
+  - catkin build mavros_msgs mavros mavros_extras
   - catkin build
   - source devel/setup.bash
   # Check for clang format
@@ -83,4 +84,4 @@ script:
   - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
   - ./check_code_format.sh
   #- catkin run_tests --no-deps --this
-  - cat /home/travis/catkin_ws/logs/offboard_node/build.make.000.log
+  - echo $ROS_PACKAGE_PATH
