@@ -78,6 +78,6 @@ script:
   - catkin build
   # Check for clang format
   - cd src/ros_ci_test
-  - git remote set-branches --add origin master
-  - git fetch
+  - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
   - ./check_code_format.sh
+  - catkin run_tests --no-deps --this
