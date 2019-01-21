@@ -10,6 +10,10 @@
 mavros_msgs::State current_state;
 void state_cb(const mavros_msgs::State::ConstPtr& msg) { current_state = *msg; }
 
+int sum_integers(int a, int b) {
+  return a + b ;
+}
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "offboard_node");
   ros::NodeHandle nh;
@@ -27,21 +31,20 @@ int main(int argc, char** argv) {
   ros::Rate rate(20.0);
 
   // wait for FCU connection
-  while (ros::ok()&& !current_state.connected) {
+  while (ros::ok() && !current_state.connected) {
     ros::spinOnce();
-    rate.sleep();  
+    rate.sleep(); 
   }
 
   geometry_msgs::PoseStamped pose;
-  pose.pose.position.x =0.0;
-  pose.pose.position.y =0.0;
-  pose.pose.position.z =2.0;
+  pose.pose.position.x = 0.0;
+  pose.pose.position.y = 0.0;
+  pose.pose.position.z = 2.0;
 
   // send a few setpoints before starting
   for (int i = 100; ros::ok() && i > 0; --i) {
     local_pos_pub.publish(pose);
     ros::spinOnce();
-    rate.sleep();
   }
 
   mavros_msgs::SetMode offb_set_mode;
