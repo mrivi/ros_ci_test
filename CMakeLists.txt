@@ -183,14 +183,3 @@ target_link_libraries(offboard_node
 ## Testing ##
 #############
 
-## Add gtest based cpp test target and link libraries
-#catkin_add_gtest(offboard_node-test test/main.cpp
-#                                      test/test_common.cpp)
-
-
-#xif(TARGET ${PROJECT_NAME}-test)
-#  target_link_libraries(offboard_node-test offboard_node
-#endif()
-
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
