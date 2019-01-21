@@ -7,7 +7,7 @@ TEST(Common, sum) {
 	int a = 5;
 	int b = 6;
 
-	result = sum_integers(a, b);
+	int result = sum_integers(a, b);
 
 	EXPECT_EQ(11, result);
 	EXPECT_EQ(0, result);
