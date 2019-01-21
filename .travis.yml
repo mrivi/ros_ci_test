@@ -44,7 +44,7 @@ install:
   - cd src
   - wstool init
   # Link the repository we are testing to the new workspace
-  #- ln -s $CI_SOURCE_PATH .
+  - ln -s $CI_SOURCE_PATH .
   # Install dependencies using rosdep
   - cd ~/catkin_ws
   - rosinstall_generator --rosdistro kinetic mavlink | tee /tmp/mavros.rosinstall
