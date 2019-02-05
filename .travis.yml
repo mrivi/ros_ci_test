@@ -78,6 +78,7 @@ script:
   - source /opt/ros/$ROS_DISTRO/setup.bash
   - cd ~/catkin_ws/src/mavros/libmavconn
   - git branch
+  - ls ~/catkin_ws/src/mavros/libmavconn/include/mavconn/
   - cd ~/catkin_ws/src/mavlink
   - git branch
   - cd ~/catkin_ws/src/mavros/mavros
