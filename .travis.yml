@@ -51,7 +51,7 @@ install:
   - rosinstall_generator --upstream mavros | tee -a /tmp/mavros.rosinstall
   - wstool merge -t src /tmp/mavros.rosinstall
   - wstool update -t src -j4
-  - rosdep install --from-paths src --ignore-src -y 
+  - rosdep install --from-paths src --ignore-src -y
   # Install GeographicLib datasets
   #- sudo -H mkdir -p /usr/share/geographiclib
 
@@ -63,7 +63,7 @@ install:
   # - mkdir build
   # - cd build
   # - cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_RULE_MESSAGES=OFF -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=ON -D WITH_OPENGL=ON ..
-  # - make -j"$(nproc)"  
+  # - make -j"$(nproc)"
   # - sudo make install
   # - sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
   # - sudo ldconfig
@@ -76,6 +76,13 @@ before_script:
 script:
   - cd ~/catkin_ws
   - source /opt/ros/$ROS_DISTRO/setup.bash
+  - cd ~/catkin_ws/src/mavros/libmavconn
+  - git branch
+  - cd ~/catkin_ws/src/mavlink
+  - git branch
+  - cd ~/catkin_ws/src/mavros/mavros
+  - git branch
+  - cd ~/catkin_ws
   - catkin build mavros_msgs mavros mavros_extras
   - catkin build
   - source devel/setup.bash
