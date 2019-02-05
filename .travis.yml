@@ -29,6 +29,8 @@ before_install:
   - sudo apt-get install -y python-rosinstall python-rosinstall-generator python-wstool python-catkin-tools
   # Install ROS Kinetic
   - sudo apt-get install -y ros-$ROS_DISTRO-ros-base
+  # Install MavLink and Mavros
+  - sudo apt-get install -y ros-$ROS_DISTRO-mavlink ros-$ROS_DISTRO-mavros-msgs ros-$ROS_DISTRO-mavros ros-$ROS_DISTRO-mavros-extras
   # Source environment
   - source /opt/ros/$ROS_DISTRO/setup.bash
   # Prepare rosdep
@@ -46,16 +48,17 @@ install:
   # Link the repository we are testing to the new workspace
   - ln -s $CI_SOURCE_PATH .
   # Install dependencies using rosdep
-  - cd ~/catkin_ws
-  - rosinstall_generator --rosdistro kinetic mavlink | tee /tmp/mavros.rosinstall
-  - rosinstall_generator --upstream mavros | tee -a /tmp/mavros.rosinstall
-  - wstool merge -t src /tmp/mavros.rosinstall
-  - wstool update -t src -j4
-  - rosdep install --from-paths src --ignore-src -y
+  # - cd ~/catkin_ws
+  # - rosinstall_generator --rosdistro kinetic mavlink | tee /tmp/mavros.rosinstall
+  # - rosinstall_generator --upstream mavros | tee -a /tmp/mavros.rosinstall
+  # - wstool merge -t src /tmp/mavros.rosinstall
+  # - wstool update -t src -j4
+  # - rosdep install --from-paths src --ignore-src -y
   # Install GeographicLib datasets
-  #- sudo -H mkdir -p /usr/share/geographiclib
-
-  - sudo -H ./src/mavros/mavros/scripts/install_geographiclib_datasets.sh
+  - sudo -H mkdir -p /usr/share/geographiclib
+  - wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
+  - chmod +x install_geographiclib_datasets.sh
+  - sudo -H ./install_geographiclib_datasets.sh
   # Install OpenCV
   # - curl -sL https://github.com/opencv/opencv/archive/2.4.13.6.zip > opencv.zip
   # - unzip opencv.zip
