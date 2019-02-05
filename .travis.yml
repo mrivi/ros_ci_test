@@ -84,6 +84,8 @@ script:
   - cd ~/catkin_ws/src/mavros/mavros
   - git branch
   - cd ~/catkin_ws
+  - catkin build libmavconn
+  - ls ~/catkin_ws/src/mavros/libmavconn/include/mavconn/
   - catkin build mavros_msgs mavros mavros_extras
   - catkin build
   - source devel/setup.bash
